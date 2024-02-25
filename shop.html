@@ -164,7 +164,7 @@
         <div class="container relative">
             <!-- Logo container-->
             <a class="logo" href="index.html">
-                <img src="assets/images/logo.png" class="inline-block dark:hidden w-[25px] h-[25px]" alt="">
+                <img src="assets/images/logo.png" class="inline-block dark:hidden w-[90px] h-[90px]" alt="">
 
                 <!-- <img src="assets/images/logo-light.png" height="24" class="hidden dark:inline-block" alt=""> -->
             </a>
@@ -192,7 +192,7 @@
                                 class="btn btn-icon rounded-full bg-indigo-600/5 hover:bg-indigo-600 border-indigo-600/10 hover:border-indigo-600 text-indigo-600 hover:text-white text-center">en</span></span>
                         <span class="login-btn-light"><span
                                 class="btn btn-icon rounded-full bg-gray-50 hover:bg-gray-200 dark:bg-slate-900 dark:hover:bg-gray-700 hover:border-gray-100 dark:border-gray-700 dark:hover:border-gray-700"><i
-                                    data-feather="" class="h-4 w-4">en</i></span></span>
+                                    data-feather="" class=" w-4">en</i></span></span>
                     </a>
                 </li>
 
@@ -496,7 +496,7 @@
                                     <li class="mt-[10px]"><a href="index.html"
                                             class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out"><i
                                                 class="uil uil-angle-right-b"></i> Home</a></li>
-                                    <li class="mt-[10px]"><a href="product-details.html"
+                                    <li class="mt-[10px]"><a href="shop.html"
                                             class="text-gray-300 hover:text-gray-400 duration-500 ease-in-out"><i
                                                 class="uil uil-angle-right-b"></i> Shop</a></li>
                                     <li class="mt-[10px]"><a href="shop.html"
@@ -700,7 +700,7 @@
                         data.data.items.forEach(item => {
 
                             const cardLink = document.createElement('a');
-                            cardLink.href = `product-details.html?id=${item.id}`; // Assuming the API returns link with item id
+                            cardLink.href = `product-details.html?id=${item.slug}`; // Assuming the API returns link with item id
                             cardLink.classList.add('card-link'); // You can style this if needed
 
                             // Create a new card element
@@ -791,7 +791,7 @@
                     container.innerHTML = ''; // Clear previous content
                     data.data.items.forEach(item => {
                         const cardLink = document.createElement('a');
-                        cardLink.href = `product-details.html?id=${item.id}`; // Assuming the API returns link with item id
+                        cardLink.href = `product-details.html?id=${item.slug}`; // Assuming the API returns link with item id
                         cardLink.classList.add('card-link'); // You can style this if needed
 
                         // Create a new card element
@@ -1059,7 +1059,7 @@
                         container.innerHTML = ''; // Clear previous content
                         data.data.items.forEach(item => {
                             const cardLink = document.createElement('a');
-                            cardLink.href = `product-details.html?id=${item.id}`; // Assuming the API returns link with item id
+                            cardLink.href = `product-details.html?id=${item.slug}`; // Assuming the API returns link with item id
                             cardLink.classList.add('card-link'); // You can style this if needed
 
                             // Create a new card element

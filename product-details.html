@@ -124,6 +124,8 @@
         <!-- End Hero -->
 
         <!-- Start -->
+      
+        
         <!-- Start -->
         <section class="relative md:pb-24 pb-16">
             <div class="container relative">
@@ -161,21 +163,21 @@
                     <div class="lg:col-span-6 md:col-span-4">
                         <div class="sticky top-20">
                             
-                            <h5 class="font-semibold text-2xl mt-5">name</h5>
+                           
 
                             <!-- <h5 class="text-lg font-semibold bg-gray-50 dark:bg-slate-800 shadow dark:shadow-gray-800 rounded-md p-2 text-center">Author</h5> -->
                             <h5 class="text-lg font-semibold bg-gray-50 dark:bg-slate-800 shadow dark:shadow-gray-800 rounded-md p-2 text-center mt-8">Available Sizes</h5>
-                            <ul class="list-none text-center mt-8">
-                                <li class="inline-block m-2"><a  class="px-3 py-1 text-slate-400 hover:text-white dark:hover:text-white bg-gray-50 dark:bg-slate-800 text-sm hover:bg-indigo-600 dark:hover:bg-indigo-600 rounded-md shadow dark:shadow-gray-800 transition-all duration-500 ease-in-out">60x120</a></li>
-                                <li class="inline-block m-2"><a  class="px-3 py-1 text-slate-400 hover:text-white dark:hover:text-white bg-gray-50 dark:bg-slate-800 text-sm hover:bg-indigo-600 dark:hover:bg-indigo-600 rounded-md shadow dark:shadow-gray-800 transition-all duration-500 ease-in-out">24"x48"</a></li>
-             
+                            <ul id="dynamic-list" class="list-none text-center mt-8">
+                                
                             </ul>
+                            
 
-                            <div class="text-center mt-12">
-                                <p class="text-slate-400 mb-4 mt-5">de</p>
+                       
+                        </div>
+                        <div class="text-center mt-12" id="descripationId">
+                               
                                
     
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -298,6 +300,10 @@
 
 
         <script>
+                const headers2 = {
+        'Accept': 'application/json',
+        'MerchantId': 'verona'
+    };
             function replaceImagesFromLocalStorage(imageURL1,imageURL2) {
     // Retrieve image URLs from local storage
   
@@ -318,16 +324,21 @@
     }
 }
 function replaceContentFromLocalStorage(productData) {
-
+    console.log("jui")
     // const productData = JSON.parse(localStorage.getItem('myProduct'));
 
     if (productData) {
         // Generate HTML dynamically based on the retrieved data
+        let categoriesHTML = '';
+        productData.categories.forEach(category => {
+            categoriesHTML += `<a href="#" class="mx-2 bg-indigo-600/10 text-indigo-600 font-semibold px-2.5 py-0.5 rounded w-fit  h-5">${category.name}</a>`;
+        });
+
         const contentHTML = `
             <div class="px-6 py-12 bg-white dark:bg-slate-900 rounded-md shadow dark:shadow-gray-800 text-center">
-                <a href="#" class="bg-indigo-600/10 text-indigo-600 font-semibold px-2.5 py-0.5 rounded w-fit mx-auto h-5">${productData.category}</a>
+                ${categoriesHTML}
                 <h5 class="font-semibold text-2xl mt-5">${productData.name}</h5>
-                <!-- Add any additional content here -->
+                
             </div>
         `;
 
@@ -347,35 +358,59 @@ function loadContentFromLocalStorage(recipeData) {
     // const recipeData = JSON.parse(localStorage.getItem('myProduct'));
     replaceImagesFromLocalStorage(recipeData.image,recipeData.image)
     if (recipeData) {
+
         // Generate HTML dynamically based on the retrieved data
-        const sizesHTML = `
-            <li class="inline-block m-2">
-                <a href="#" class="px-3 py-1 text-slate-400 hover:text-white dark:hover:text-white bg-gray-50 dark:bg-slate-800 text-sm hover:bg-indigo-600 dark:hover:bg-indigo-600 rounded-md shadow dark:shadow-gray-800 transition-all duration-500 ease-in-out">24*2</a>
-            </li>
+        const descHTML = `
+      
+                <p class="text-slate-400 mb-4 mt-5">jk description</p>
+              
+         
         `;
 
         const contentHTML = `
             <h5 class="font-semibold text-2xl mt-5">${recipeData.slug}</h5>
             <h5 class="text-lg font-semibold bg-gray-50 dark:bg-slate-800 shadow dark:shadow-gray-800 rounded-md p-2 text-center mt-8">Available Sizes</h5>
-            <ul class="list-none text-center mt-8">${sizesHTML}</ul>
-            <div class="text-center mt-12">
-                <p class="text-slate-400 mb-4 mt-5">${recipeData.description}</p>
-              
-            </div>
+            <ul id="dynamic-list" class="list-none text-center mt-8">  ${renderList(recipeData.eC_Item_VariantCombinations)}</ul>
+          
         `;
 
         // Replace the static content with the dynamically generated HTML
         document.addEventListener('DOMContentLoaded', function() {
             const contentContainer = document.querySelector('.sticky');
+            
+            contentContainer.innerHTML=''
             if (contentContainer) {
+                
                 // Update the contentContainer's innerHTML
                 contentContainer.innerHTML = contentHTML;
+               
             } else {
                 console.error('Content container not found');
             }
         });
     }
 }
+
+function renderList(items) {
+    console.log(items)
+    const listContainer = document.getElementById("dynamic-list");
+    listContainer.innerHTML = ""; // Clear previous content
+
+    items.forEach(item => {
+      if (item.isAvailable === 1) {
+        console.log(item.variontOptions[0].option)
+        let text=item.variontOptions[0].option
+        console.log(text)
+        const li = document.createElement("li");
+        li.className = "inline-block m-2";
+        const a = document.createElement("a");
+        a.className = "px-3 py-1 text-slate-400 hover:text-white dark:hover:text-white bg-gray-50 dark:bg-slate-800 text-sm hover:bg-indigo-600 dark:hover:bg-indigo-600 rounded-md shadow dark:shadow-gray-800 transition-all duration-500 ease-in-out";
+        a.innerText =text;
+        li.appendChild(a);
+        listContainer.appendChild(li);
+      }
+    });
+  }
 
 // Call the function to load content from local storage
 
@@ -386,23 +421,54 @@ const productId = urlParams.get('id');
 
 // Check if productId is not null and is a valid ID
 if (productId) {
-    // Use the productId as needed, such as fetching product details from an API
+    const contentContainer = document.getElementById('name');
+     
+     contentContainer.innerHTML =   ` 
+     <div class="px-6 py-12 bg-white dark:bg-slate-900 rounded-md shadow dark:shadow-gray-800 text-center">
+     <div role="status" class="animate-pulse" id="loadingSpinner2">
+                 <div
+                     class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 max-w-[640px] mb-2.5 mx-auto">
+                 </div>
+                 <div class="h-2.5 mx-auto bg-gray-300 rounded-full dark:bg-gray-700 max-w-[540px]">
+                 </div>
+                 <div class="flex items-center justify-center mt-4">
+     
+                     <div class="w-20 h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 me-3"></div>
+                     <div class="w-24 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+                 </div>
+                </div>
+             </div>`
+          
+             // Use the productId as needed, such as fetching product details from an API
     console.log('Product ID:', productId);
     let allProduct=JSON.parse(localStorage.getItem('myProducts'))
-    let myproduct=allProduct.find(el=>el.id==productId)
-    console.log('allProduct ID:', allProduct);
-    console.log('myproduct ID:', myproduct);
-    loadContentFromLocalStorage(myproduct)
-    replaceContentFromLocalStorage(myproduct)
+    
+    fetch(`https://veronabknd.meta-itech.com/api/V4/web/Item/${productId}/details`, {
+            headers: headers2
+        })
+            .then(response => response.json())
+            .then(data => {
+
+                console.log("kproductId",data.data)
+                replaceContentFromLocalStorage(data.data)
+    loadContentFromLocalStorage(data.data)
+   // Retrieve the reference to the <div> element with the id descripationId
+const descriptionContainer = document.getElementById('descripationId');
+
+// Check if the descriptionContainer exists
+if (descriptionContainer) {
+    // Set the innerHTML of the descriptionContainer to the recipeData.description
+    descriptionContainer.innerHTML = data.data.description;
+} else {
+    console.error('Description container not found');
+}
+
+            })
+    // 
+  
 } else {
     console.error('Product ID not found in the URL');
-}
-        </script>
-        <script>
-            const headers2 = {
-        'Accept': 'application/json',
-        'MerchantId': 'verona'
-    };
+}  
     let product=[]
      // Function to load dynamic content and initialize the slider
      function loadDynamicContentAndInitSlider() {
@@ -482,12 +548,13 @@ if (productId) {
     // Call the function to load dynamic content and initialize the slider
     loadDynamicContentAndInitSlider();
     
-    // Call the function to load dynamic content and initialize the slider
-    loadDynamicContentAndInitSlider();
+
     
         // Usage: Fetch slider data from backend API
         // fetchSliderData('https://veronabknd.meta-itech.com/api/V4/web/Item', handleSliderData);
     </script>
+       <script src="https://cdn.tailwindcss.com"></script>
+
         <!-- JAVASCRIPTS -->
     </body>
 </html>
